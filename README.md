@@ -1,568 +1,331 @@
-# JavaScript 基础 - 第1天
+# JavaScript 基础 - 第5天
 
-> 了解变量、数据类型、运算符等基础概念，能够实现数据类型的转换，结合四则运算体会如何编程。
+> 知道对象数据类型的特征，能够利用数组对象渲染页面
 
-- 体会现实世界中的事物与计算机的关系
-- 理解什么是数据并知道数据的分类
-- 理解变量存储数据的“容器”
-- 掌握常见运算符的使用，了解优先级关系
-- 知道 JavaScript 数据类型隐式转换的特征
+- 理解什么是对象，掌握定义对象的语法
+- 掌握数学对象的使用
 
-## 介绍
+## 对象
 
-> 掌握 JavaScript 的引入方式，初步认识 JavaScript 的作用
+> 对象是 JavaScript 数据类型的一种，之前已经学习了数值类型、字符串类型、布尔类型、undefined。对象数据类型可以被理解成是一种数据集合。它由属性和方法两部分构成。
 
-### 引入方式
+### 语法
 
-JavaScript 程序不能独立运行，它需要被嵌入 HTML 中，然后浏览器才能执行 JavaScript 代码。通过 `script` 标签将 JavaScript 代码引入到 HTML 中，有两种方式：
-
-#### 内部方式
-
-通过 `script` 标签包裹 JavaScript 代码
+声明一个对象类型的变量与之前声明一个数值或字符串类型的变量没有本质上的区别。
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>JavaScript 基础 - 引入方式</title>
+  <title>JavaScript 基础 - 对象语法</title>
 </head>
 <body>
-  <!-- 内联形式：通过 script 标签包裹 JavaScript 代码 -->
+
   <script>
-    alert('嗨，欢迎来传智播学习前端技术！')
-  </script>
-</body>
-</html>
-```
-
-#### 外部形式
-
-一般将 JavaScript 代码写在独立的以 .js 结尾的文件中，然后通过 `script` 标签的 `src` 属性引入
-
-```javascript
-// demo.js
-document.write('嗨，欢迎来传智播学习前端技术！')
-```
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>JavaScript 基础 - 引入方式</title>
-</head>
-<body>
-  <!-- 外部形式：通过 script 的 src 属性引入独立的 .js 文件 -->
-  <script src="demo.js"></script>
-</body>
-</html>
-```
-
-如果 script 标签使用 src 属性引入了某 .js 文件，那么 标签的代码会被忽略！！！如下代码所示：
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>JavaScript 基础 - 引入方式</title>
-</head>
-<body>
-  <!-- 外部形式：通过 script 的 src 属性引入独立的 .js 文件 -->
-  <script src="demo.js">
-    // 此处的代码会被忽略掉！！！！
-  	alert(666);  
-  </script>
-</body>
-</html>
-```
-
-###  注释和结束符
-
-通过注释可以屏蔽代码被执行或者添加备注信息，JavaScript 支持两种形式注释语法：
-
-#### 单行注释
-
-使用 `// ` 注释单行代码
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>JavaScript 基础 - 注释</title>
-</head>
-<body>
-  
-  <script>
-    // 这种是单行注释的语法
-    // 一次只能注释一行
-    // 可以重复注释
-    document.write('嗨，欢迎来传智播学习前端技术！');
-  </script>
-</body>
-</html>
-```
-
-#### 多行注释
-
-使用 `/* */` 注释多行代码
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>JavaScript 基础 - 注释</title>
-</head>
-<body>
-  
-  <script>
-    /* 这种的是多行注释的语法 */
-    /*
-    	更常见的多行注释是这种写法
-    	在些可以任意换行
-    	多少行都可以
-      */
-    document.write('嗨，欢迎来传智播学习前端技术！')
-  </script>
-</body>
-</html>
-```
-
-**注：编辑器中单行注释的快捷键为 `ctrl + /`**
-
-### 结束符
-
-在 JavaScript 中 `;` 代表一段代码的结束，多数情况下可以省略 `;` 使用回车（enter）替代。
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>JavaScript 基础 - 结束符</title>
-</head>
-<body>
-  
-  <script> 
-    alert(1);
-    alert(2);
-    alert(1)
-    alert(2)
-  </script>
-</body>
-</html>
-```
-
-实际开发中有许多人主张书写 JavaScript 代码时省略结束符 `;`
-
-### 输入和输出
-
-输出和输入也可理解为人和计算机的交互，用户通过键盘、鼠标等向计算机输入信息，计算机处理后再展示结果给用户，这便是一次输入和输出的过程。
-
-举例说明：如按键盘上的方向键，向上/下键可以滚动页面，按向上/下键这个动作叫作输入，页面发生了滚动了这便叫输出。
-
-#### 输出
-
-JavaScript 可以接收用户的输入，然后再将输入的结果输出：
-
-`alert()`、`document.wirte()`
-
-以数字为例，向 `alert()` 或 `document.write()`输入任意数字，他都会以弹窗形式展示（输出）给用户。
-
-####  输入
-
-向 `prompt()` 输入任意内容会以弹窗形式出现在浏览器中，一般提示用户输入一些内容。
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>JavaScript 基础 - 输入输出</title>
-</head>
-<body>
-  
-  <script> 
-    // 1. 输入的任意数字，都会以弹窗形式展示
-    document.write('要输出的内容')
-    alert('要输出的内容');
-
-    // 2. 以弹窗形式提示用户输入姓名，注意这里的文字使用英文的引号
-    prompt('请输入您的姓名:')
-  </script>
-</body>
-</html>
-```
-
-## 变量
-
-> 理解变量是计算机存储数据的“容器”，掌握变量的声明方式
-
-变量是计算机中用来存储数据的“容器”，它可以让计算机变得有记忆，通俗的理解变量就是使用【某个符号】来代表【某个具体的数值】（数据）
-
-```html
-<script>
-  // x 符号代表了 5 这个数值
-  x = 5
-  // y 符号代表了 6 这个数值
-  y = 6
-    
-  //举例： 在 JavaScript 中使用变量可以将某个数据（数值）记录下来！
-
-  // 将用户输入的内容保存在 num 这个变量（容器）中
-  num = prompt('请输入一数字!')
-
-  // 通过 num 变量（容器）将用户输入的内容输出出来
-  alert(num)
-  document.write(num)
-</script>
-```
-
-### 声明
-
-声明(定义)变量有两部分构成：声明关键字、变量名（标识）
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>JavaScript 基础 - 声明和赋值</title>
-</head>
-<body>
-  
-  <script> 
-    // let 变量名
-    // 声明(定义)变量有两部分构成：声明关键字、变量名（标识）
-    // let 即关键字，所谓关键字是系统提供的专门用来声明（定义）变量的词语
-    // age 即变量的名称，也叫标识符
-    let age
-  </script>
-</body>
-</html>
-```
-
-关键字是 JavaScript 中内置的一些英文词汇（单词或缩写），它们代表某些特定的含义，如 `let` 的含义是声明变量的，看到 `let`  后就可想到这行代码的意思是在声明变量，如 `let age;` 
-
-`let` 和 `var` 都是 JavaScript 中的声明变量的关键字，推荐使用 `let` 声明变量！！！
-
-### 赋值
-
-声明（定义）变量相当于创造了一个空的“容器”，通过赋值向这个容器中添加数据。
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>JavaScript 基础 - 声明和赋值</title>
-</head>
-<body>
-  
-  <script> 
-    // 声明(定义)变量有两部分构成：声明关键字、变量名（标识）
-    // let 即关键字，所谓关键字是系统提供的专门用来声明（定义）变量的词语
-    // age 即变量的名称，也叫标识符
-    let age
-    // 赋值，将 18 这个数据存入了 age 这个“容器”中
-    age = 18
-    // 这样 age 的值就成了 18
-    document.write(age)
-    
-    // 也可以声明和赋值同时进行
+    // 声明字符串类型变量
     let str = 'hello world!'
-    alert(str);
+    
+    // 声明数值类型变量
+    let num = 199
+
+    // 声明对象类型变量，使用一对花括号
+    // user 便是一个对象了，目前它是一个空对象
+    let user = {}
   </script>
 </body>
 </html>
 ```
 
-### 关键字
+### 属性和访问
 
-JavaScript 使用专门的关键字 `let` 和 `var` 来声明（定义）变量，在使用时需要注意一些细节：
+数据描述性的信息称为属性，如人的姓名、身高、年龄、性别等，一般是名词性的。
 
-以下是使用 `let` 时的注意事项：
-
-1. 允许声明和赋值同时进行
-2. 不允许重复声明
-3. 允许同时声明多个变量并赋值
-4. JavaScript 中内置的一些关键字不能被当做变量名
-
-以下是使用 `var` 时的注意事项：
-
-2. 允许声明和赋值同时进行
-2. 允许重复声明
-3. 允许同时声明多个变量并赋值
-
-大部分情况使用 `let` 和 `var` 区别不大，但是 `let` 相较 `var` 更严谨，因此推荐使用 `let`，后期会更进一步介绍二者间的区别。
-
-### 变量名命名规则
-
-关于变量的名称（标识符）有一系列的规则需要遵守：
-
-1. 只能是字母、数字、下划线、$，且不能能数字开头
-2. 字母区分大小写，如 Age 和 age 是不同的变量
-3. JavaScript 内部已占用于单词（关键字或保留字）不允许使用
-4. 尽量保证变量具有一定的语义，见字知义
-
-注：所谓关键字是指 JavaScript 内部使用的词语，如 `let` 和`var`，保留字是指 JavaScript 内部目前没有使用的词语，但是将来可能会使用词语。
+1. 属性都是成 对出现的，包括属性名和值，它们之间使用英文 `:` 分隔
+2. 多个属性之间使用英文 `,` 分隔
+3. 属性就是依附在对象上的变量
+4. 属性名可以使用 `""` 或 `''`，一般情况下省略，除非名称遇到特殊符号如空格、中横线等
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>JavaScript 基础 - 变量名命名规则</title>
+  <title>JavaScript 基础 - 对象语法</title>
 </head>
 <body>
-  
-  <script> 
-    let age = 18 // 正确
-    let age1 = 18 // 正确
-    let _age = 18 // 正确
 
-    // let 1age = 18; // 错误，不可以数字开头
-    let $age = 18 // 正确
-    let Age = 24 // 正确，它与小写的 age 是不同的变量
-    // let let = 18; // 错误，let 是关键字
-    let int = 123 // 不推荐，int 是保留字
+  <script>
+    // 通过对象描述一个人的数据信息
+    // person 是一个对象，它包含了一个属性 name
+    // 属性都是成对出现的，属性名 和 值，它们之间使用英文 : 分隔
+    let person = {
+      name: '小明', // 描述人的姓名
+      age: 18, // 描述人的年龄
+      stature: 185, // 描述人的身高
+      gender: '男', // 描述人的性别
+    }
   </script>
 </body>
 </html>
 ```
 
-## 常量
+声明对象，并添加了若干属性后，可以使用 `.` 或 `[]` 获得对象中属性对应的值，我称之为属性访问。
 
-概念：使用 const 声明的变量称为“常量”。
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JavaScript 基础 - 对象语法</title>
+</head>
+<body>
 
-使用场景：当某个变量永远不会改变的时候，就可以使用 const 来声明，而不是let。
+  <script>
+    // 通过对象描述一个人的数据信息
+    // person 是一个对象，它包含了一个属性 name
+    // 属性都是成对出现的，属性名 和 值，它们之间使用英文 : 分隔
+    let person = {
+      name: '小明', // 描述人的姓名
+      age: 18, // 描述人的年龄
+      stature: 185, // 描述人的身高
+      gender: '男', // 描述人的性别
+    };
+    
+    // 访问人的名字
+    console.log(person.name) // 结果为 小明
+    // 访问人性别
+    console.log(person.gender) // 结果为 男
+    // 访问人的身高
+    console.log(person['stature']) // 结果为 185
+   // 或者
+    console.log(person.stature) // 结果同为 185
+  </script>
+</body>
+</html>
+```
 
-命名规范：和变量一致
+扩展：也可以动态为对象添加属性，动态添加与直接定义是一样的，只是语法上更灵活。
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JavaScript 基础 - 对象语法</title>
+</head>
+<body>
+
+  <script>
+    // 声明一个空的对象（没有任何属性）
+	let user = {}
+    // 动态追加属性
+    user.name = '小明'
+    user['age'] = 18
+    
+    // 动态添加与直接定义是一样的，只是语法上更灵活
+  </script>
+</body>
+</html>
+```
+
+### 方法和调用
+
+数据行为性的信息称为方法，如跑步、唱歌等，一般是动词性的，其本质是函数。
+
+1. 方法是由方法名和函数两部分构成，它们之间使用 : 分隔
+2. 多个属性之间使用英文 `,` 分隔
+3. 方法是依附在对象中的函数
+4. 方法名可以使用 `""` 或 `''`，一般情况下省略，除非名称遇到特殊符号如空格、中横线等
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JavaScript 基础 - 对象方法</title>
+</head>
+<body>
+
+  <script>
+    // 方法是依附在对象上的函数
+    let person = {
+      name: '小红',
+      age: 18,
+      // 方法是由方法名和函数两部分构成，它们之间使用 : 分隔
+      singing: function () {
+        console.log('两只老虎，两只老虎，跑的快，跑的快...')
+      },
+      run: function () {
+        console.log('我跑的非常快...')
+      }
+    }
+  </script>
+</body>
+</html>
+```
+
+声明对象，并添加了若干方法后，可以使用 `.` 或 `[]` 调用对象中函数，我称之为方法调用。
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JavaScript 基础 - 对象方法</title>
+</head>
+<body>
+
+  <script>
+    // 方法是依附在对象上的函数
+    let person = {
+      name: '小红',
+      age: 18,
+      // 方法是由方法名和函数两部分构成，它们之间使用 : 分隔
+      singing: function () {
+        console.log('两只老虎，两只老虎，跑的快，跑的快...')
+      },
+      run: function () {
+        console.log('我跑的非常快...')
+      }
+    }
+    
+    // 调用对象中 singing 方法
+    person.singing()
+    // 调用对象中的 run 方法
+    person.run()
+
+  </script>
+</body>
+</html>
+```
+
+扩展：也可以动态为对象添加方法，动态添加与直接定义是一样的，只是语法上更灵活。
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JavaScript 基础 - 对象方法</title>
+</head>
+<body>
+
+  <script>
+    // 声明一个空的对象（没有任何属性，也没有任何方法）
+	let user = {}
+    // 动态追加属性
+    user.name = '小明'
+    user.['age'] = 18
+    
+    // 动态添加方法
+    user.move = function () {
+      console.log('移动一点距离...')
+    }
+    
+  </script>
+</body>
+</html>
+```
+
+**注：无论是属性或是方法，同一个对象中出现名称一样的，后面的会覆盖前面的。**
+
+### null
+
+null 也是 JavaScript 中数据类型的一种，通常只用它来表示不存在的对象。使用 typeof 检测类型它的类型时，结果为 `object`。
+
+#### 遍历对象
 
 ~~~javascript
-const PI = 3.14
+let obj = {
+    uname: 'pink'
+}
+for(let k in obj) {
+    // k 属性名  字符串  带引号    obj.'uname'     k ===  'uname'
+    // obj[k]  属性值    obj['uname']   obj[k]
+}
 ~~~
 
->注意： 常量不允许重新赋值,声明的时候必须赋值（初始化）
+for in 不提倡遍历数组 因为 k 是 字符串  
 
-## 数据类型
+## 内置对象
 
-> 计算机世界中的万事成物都是数据。
+回想一下我们曾经使用过的 `console.log`，`console`其实就是 JavaScript 中内置的对象，该对象中存在一个方法叫 `log`，然后调用 `log` 这个方法，即 `console.log()`。
 
-计算机程序可以处理大量的数据，为了方便数据的管理，将数据分成了不同的类型：
+除了 `console` 对象外，JavaScritp 还有其它的内置的对象
 
-注：通过 typeof 关键字检测数据类型
+### Math
 
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>JavaScript 基础 - 数据类型</title>
-</head>
-<body>
-  
-  <script> 
-    // 检测 1 是什么类型数据，结果为 number
-    document.write(typeof 1)
-  </script>
-</body>
-</html>
+`Math` 是 JavaScript 中内置的对象，称为数学对象，这个对象下即包含了属性，也包含了许多的方法。
+
+#### 属性
+
+- Math.PI，获取圆周率
+
+```javascript
+// 圆周率
+console.log(Math.PI);
 ```
 
-### 数值类型
+#### 方法
 
-即我们数学中学习到的数字，可以是整数、小数、正数、负数
+- Math.random，生成 0 到 1 间的随机数
 
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>JavaScript 基础 - 数据类型</title>
-</head>
-<body>
-  
-  <script> 
-    let score = 100 // 正整数
-    let price = 12.345 // 小数
-    let temperature = -40 // 负数
-
-    document.write(typeof score) // 结果为 number
-    document.write(typeof price) // 结果为 number
-    document.write(typeof temperature) // 结果为 number
-  </script>
-</body>
-</html>
+```javascript
+// 0 ~ 1 之间的随机数, 包含 0 不包含 1
+Math.random()
 ```
 
-JavaScript 中的数值类型与数学中的数字是一样的，分为正数、负数、小数等。
+- Math.ceil，数字向上取整
 
-### 字符串类型
-
-通过单引号（ `''`） 、双引号（ `""`）或反引号包裹的数据都叫字符串，单引号和双引号没有本质上的区别，推荐使用单引号。
-
-注意事项：
-
-1. 无论单引号或是双引号必须成对使用
-2. 单引号/双引号可以互相嵌套，但是不以自已嵌套自已
-3. 必要时可以使用转义符 `\`，输出单引号或双引号
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>JavaScript 基础 - 数据类型</title>
-</head>
-<body>
-  
-  <script> 
-    let user_name = '小明' // 使用单引号
-    let gender = "男" // 使用双引号
-    let str = '123' // 看上去是数字，但是用引号包裹了就成了字符串了
-    let str1 = '' // 这种情况叫空字符串
-		
-    documeent.write(typeof user_name) // 结果为 string
-    documeent.write(typeof gender) // 结果为 string
-    documeent.write(typeof str) // 结果为 string
-  </script>
-</body>
-</html>
+```javascript
+// 舍弃小数部分，整数部分加1
+Math.ceil(3.4)
 ```
 
-### 布尔类型
+- Math.floor，数字向下取整
 
-表示肯定或否定时在计算机中对应的是布尔类型数据，它有两个固定的值 `true` 和 `false`，表示肯定的数据用 `true`，表示否定的数据用 `false`。
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>JavaScript 基础 - 数据类型</title>
-</head>
-<body>
-  
-  <script> 
-    //  pink老师帅不帅？回答 是 或 否
-    let isCool = true // 是的，摔死了！
-    isCool = false // 不，套马杆的汉子！
-
-    document.write(typeof isCool) // 结果为 boolean
-  </script>
-</body>
-</html>
+```javascript
+// 舍弃小数部分，整数部分不变
+Math.floor(4.68)
 ```
 
-### undefined
+- Math.round，四舍五入取整
 
-未定义是比较特殊的类型，只有一个值 undefined，只声明变量，不赋值的情况下，变量的默认值为 undefined，一般很少【直接】为某个变量赋值为 undefined。
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>JavaScript 基础 - 数据类型</title>
-</head>
-<body>
-  
-  <script> 
-    // 只声明了变量，并末赋值
-    let tmp;
-    document.write(typeof tmp) // 结果为 undefined
-  </script>
-</body>
-</html>
+```javascript
+// 取整，四舍五入原则
+Math.round(5.46539)
+Math.round(4.849)
 ```
 
-**注：JavaScript 中变量的值决定了变量的数据类型。**
+- Math.max，在一组数中找出最大的
 
-## 类型转换
-
-> 理解弱类型语言的特征，掌握显式类型转换的方法
-
-在 JavaScript 中数据被分成了不同的类型，如数值、字符串、布尔值、undefined，在实际编程的过程中，不同数据类型之间存在着转换的关系。
-
-### 隐式转换
-
-某些运算符被执行时，系统内部自动将数据类型进行转换，这种转换称为隐式转换。
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>JavaScript 基础 - 隐式转换</title>
-</head>
-<body>
-  <script> 
-    let num = 13 // 数值
-    let num2 = '2' // 字符串
-
-    // 结果为 132
-    // 原因是将数值 num 转换成了字符串，相当于 '13'
-    // 然后 + 将两个字符串拼接到了一起
-    console.log(num + num2)
-
-    // 结果为 11
-    // 原因是将字符串 num2 转换成了数值，相当于 2
-    // 然后数值 13 减去 数值 2
-    console.log(num - num2)
-
-    let a = prompt('请输入一个数字')
-    let b = prompt('请再输入一个数字')
-
-    alert(a + b);
-  </script>
-</body>
-</html>
+```javascript
+// 找出最大值
+Math.max(10, 21, 7, 24, 13)
 ```
 
-注：数据类型的隐式转换是 JavaScript 的特征，后续学习中还会遇到，目前先需要理解什么是隐式转换。
+- Math.min，在一组数中找出最小的
 
-补充介绍模板字符串的拼接的使用
-
-### 显式转换
-
-编写程序时过度依靠系统内部的隐式转换是不严禁的，因为隐式转换规律并不清晰，大多是靠经验总结的规律。为了避免因隐式转换带来的问题，通常根逻辑需要对数据进行显示转换。
-
-#### Number
-
-通过 `Number` 显示转换成数值类型，当转换失败时结果为 `NaN`（Not a Number）即不是一个数字。
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>JavaScript 基础 - 隐式转换</title>
-</head>
-<body>
-  <script>
-    let t = '12'
-    let f = 8
-
-    // 显式将字符串 12 转换成数值 12
-    t = Number(t)
-
-    // 检测转换后的类型
-    // console.log(typeof t);
-    console.log(t + f) // 结果为 20
-
-    // 并不是所有的值都可以被转成数值类型
-    let str = 'hello'
-    // 将 hello 转成数值是不现实的，当无法转换成
-    // 数值时，得到的结果为 NaN （Not a Number）
-    console.log(Number(str))
-  </script>
-</body>
-</html>
+```javascript
+// 找出最小值
+Math.min(24, 18, 6, 19, 21)
 ```
 
+- Math.pow，幂方法
 
+```javascript
+// 求某个数的多少次方
+Math.pow(4, 2) // 求 4 的 2 次方
+Math.pow(2, 3) // 求 2 的 3 次方
+```
+
+- Math.sqrt，平方根
+
+```javascript
+// 求某数的平方根
+Math.sqrt(16)
+```
+
+数学对象提供了比较多的方法，这里不要求强记，通过演示数学对象的使用，加深对对象的理解。
 
